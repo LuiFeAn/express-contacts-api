@@ -7,7 +7,7 @@ import { RegisterUserRequest } from "./requests/register-user.dto";
 export class RegisterUserService {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(dto: RegisterUserRequest) {
+  async execute(dto: RegisterUserRequest): Promise<User> {
     const emailAlreadyExists = await this.userRepository.emailExists(dto.email);
 
     if (emailAlreadyExists) {
