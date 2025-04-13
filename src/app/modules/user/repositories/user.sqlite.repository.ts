@@ -2,20 +2,53 @@ import { Database } from "sqlite3";
 import { IUserRepository } from "./user.interface.repository";
 import { User } from "../model";
 import sqlite from "../../../@shared/database/sqlite";
+import { IUser } from "../model/interface";
 
 export class UserSqliteRepository implements IUserRepository {
   constructor(private readonly db: Database) {}
 
   async create(user: User): Promise<User> {
-    const stmt = this.db.prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    stmt.run(user.name, user.email, user.password);
-    return user;
+    const raw: IUser = await new Promise((resolve, reject) => {
+      this.db.run(
+        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        [user.name, user.email, user.password],
+        (err) => {
+          if (err) reject(err);
+          else resolve(user);
+        }
+      );
+    });
+    return new User(raw);
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const raw: IUser = await new Promise((resolve, reject) => {
+      this.db.get(
+        "SELECT * FROM users WHERE email = ?",
+        [email],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row as unknown as User);
+        }
+      );
+    });
+    if (!raw) {
+      return null;
+    }
+    return new User(raw);
   }
 
   async emailExists(email: string): Promise<boolean> {
-    const stmt = this.db.prepare("SELECT * FROM users WHERE email = ?");
-    const result = stmt.get(email);
-    return result ? true : false;
+    return new Promise((resolve, reject) => {
+      this.db.get(
+        "SELECT * FROM users WHERE email = ?",
+        [email],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(!!row);
+        }
+      );
+    });
   }
 }
 
