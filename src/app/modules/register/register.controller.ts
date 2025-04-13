@@ -11,7 +11,7 @@ class RegisterController {
   async register(req: Request<{}, {}, RegisterUserRequest>, res: Response) {
     const user = await this.userService.execute(req.body);
 
-    res.status(201).json(UserRegisterMapper.toRequest(user));
+    res.status(201).json(UserRegisterMapper.toResponse(user));
   }
 }
 
