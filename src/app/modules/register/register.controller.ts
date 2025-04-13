@@ -7,11 +7,11 @@ import { User } from "../user/model";
 
 class RegisterController {
   constructor(
-    private readonly userService: IBaseService<RegisterUserRequest, User>
+    private readonly registerUser: IBaseService<RegisterUserRequest, User>
   ) {}
 
   async register(req: Request<{}, {}, RegisterUserRequest>, res: Response) {
-    const user = await this.userService.execute(req.body);
+    const user = await this.registerUser.execute(req.body);
 
     res.status(201).json(UserRegisterMapper.toResponse(user));
   }

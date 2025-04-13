@@ -9,14 +9,14 @@ import { AuthenticationRequest } from "./requests/authentication.dto";
 
 export class AuthenticationController {
   constructor(
-    private readonly authenticationService: IBaseService<
+    private readonly authentication: IBaseService<
       AuthenticationRequest,
       IAuthenticationOutput
     >
   ) {}
 
   async login(req: Request, res: Response) {
-    const { token, user } = await this.authenticationService.execute(req.body);
+    const { token, user } = await this.authentication.execute(req.body);
 
     res
       .status(200)

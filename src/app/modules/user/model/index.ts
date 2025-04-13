@@ -7,7 +7,7 @@ export class User extends BaseModel {
   private _name: string;
   private _email: string;
   private _password: string;
-  private _contacts: Contact[] = [];
+  private _contacts: Contact[];
 
   constructor({
     name,
@@ -22,7 +22,7 @@ export class User extends BaseModel {
     this._name = name;
     this._email = email;
     this._password = password;
-    this._contacts = contacts;
+    this._contacts = contacts || [];
   }
   hashPassword() {
     this._password = bcrypt.hashSync(this._password, 10);

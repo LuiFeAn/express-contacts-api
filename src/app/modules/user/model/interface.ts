@@ -5,5 +5,5 @@ export interface IUser extends IBaseModel {
   name: string;
   email: string;
   password: string;
-  contacts: Contact[];
+  contacts?: Contact[];
 }
