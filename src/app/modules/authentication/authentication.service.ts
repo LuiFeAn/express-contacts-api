@@ -4,11 +4,17 @@ import { IUserRepository } from "../user/repositories/user.interface.repository"
 import { userSqliteRepository } from "../user/repositories/user.sqlite.repository";
 import { AuthenticationRequest } from "./requests/authentication.dto";
 import jwt from "jsonwebtoken";
+import { User } from "../user/model";
+
+export interface IAuthenticationOutput {
+  user: User;
+  token: string;
+}
 
 export class AuthenticationService {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(dto: AuthenticationRequest) {
+  async execute(dto: AuthenticationRequest): Promise<IAuthenticationOutput> {
     const user = await this.userRepository.findByEmail(dto.email);
 
     const isPasswordValid = user?.comparePassword(dto.password);
