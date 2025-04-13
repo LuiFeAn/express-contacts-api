@@ -1,6 +1,6 @@
 import express from "express";
 import { envs } from "./app/@shared/envs";
-import router from "./app/routes";
+import router from "./app/router";
 import { globalError } from "./app/@shared/middlewares/global.error.middleware";
 
 const app = express();
