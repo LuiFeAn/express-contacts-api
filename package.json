@@ -1,0 +1,24 @@
+{
+  "name": "tecsmobi-api-test",
+  "version": "1.0.0",
+  "description": "API para o teste técnico da tecsmobi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "node dist/server.js"
+  },
+  "author": "Luis Fernando",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7",
+    "ts-node-dev": "^2.0.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1"
+  }
+}
