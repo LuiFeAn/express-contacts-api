@@ -13,7 +13,7 @@ export class AuthenticationController {
 
     res
       .status(200)
-      .json({ token, user: UserAuthenticationMapper.toRequest(user) });
+      .json({ user: UserAuthenticationMapper.toRequest(user), token });
   }
 }
 
