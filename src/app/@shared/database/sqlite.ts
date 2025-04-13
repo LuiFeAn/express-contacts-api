@@ -1,10 +1,10 @@
 import { Database } from "sqlite3";
 
-
-const sqlite = new Database(":memory:");
+const dbPath = "./database.sqlite";
+const sqlite = new Database(dbPath);
 
 sqlite.exec(`
-  CREATE TABLE users (
+  CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
@@ -13,7 +13,7 @@ sqlite.exec(`
 `);
 
 sqlite.exec(`
-  CREATE TABLE contacts (
+  CREATE TABLE IF NOT EXISTS contacts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
