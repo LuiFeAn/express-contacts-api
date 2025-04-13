@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import {
-  RegisterUserService,
-  registerUserService,
-} from "./register-user.service";
+import { registerUserService } from "./register-user.service";
 import { RegisterUserRequest } from "./requests/register-user.dto";
 import { UserRegisterMapper } from "./mappers/user-register.mapper";
+import { IBaseService } from "../../@shared/services/base.service";
+import { User } from "../user/model";
+
 class RegisterController {
-  constructor(private readonly userService: RegisterUserService) {}
+  constructor(
+    private readonly userService: IBaseService<RegisterUserRequest, User>
+  ) {}
 
   async register(req: Request<{}, {}, RegisterUserRequest>, res: Response) {
     const user = await this.userService.execute(req.body);

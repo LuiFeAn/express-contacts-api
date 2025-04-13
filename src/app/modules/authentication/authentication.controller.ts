@@ -1,12 +1,19 @@
 import { Request, Response } from "express";
 import {
   authenticationService,
-  AuthenticationService,
+  IAuthenticationOutput,
 } from "./authentication.service";
 import { UserAuthenticationMapper } from "./mappers/user-authentication.mapper";
+import { IBaseService } from "../../@shared/services/base.service";
+import { AuthenticationRequest } from "./requests/authentication.dto";
 
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: IBaseService<
+      AuthenticationRequest,
+      IAuthenticationOutput
+    >
+  ) {}
 
   async login(req: Request, res: Response) {
     const { token, user } = await this.authenticationService.execute(req.body);
