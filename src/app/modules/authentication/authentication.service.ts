@@ -5,13 +5,16 @@ import { userSqliteRepository } from "../user/repositories/user.sqlite.repositor
 import { AuthenticationRequest } from "./requests/authentication.dto";
 import jwt from "jsonwebtoken";
 import { User } from "../user/model";
+import { IBaseService } from "../../@shared/services/base.service";
 
 export interface IAuthenticationOutput {
   user: User;
   token: string;
 }
 
-export class AuthenticationService {
+export class AuthenticationService
+  implements IBaseService<AuthenticationRequest, IAuthenticationOutput>
+{
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(dto: AuthenticationRequest): Promise<IAuthenticationOutput> {
