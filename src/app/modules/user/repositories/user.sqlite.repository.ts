@@ -3,6 +3,7 @@ import { IUserRepository } from "./user.interface.repository";
 import { User } from "../model";
 import sqlite from "../../../@shared/database/sqlite";
 import { IUser } from "../model/interface";
+import { UserMapper } from "../mappers/user.mapper";
 
 export class UserSqliteRepository implements IUserRepository {
   constructor(private readonly db: Database) {}
@@ -18,7 +19,7 @@ export class UserSqliteRepository implements IUserRepository {
         }
       );
     });
-    return new User(raw);
+    return UserMapper.sqliteToDomain(raw);
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -35,7 +36,7 @@ export class UserSqliteRepository implements IUserRepository {
     if (!raw) {
       return null;
     }
-    return new User(raw);
+    return UserMapper.sqliteToDomain(raw);
   }
 
   async emailExists(email: string): Promise<boolean> {
