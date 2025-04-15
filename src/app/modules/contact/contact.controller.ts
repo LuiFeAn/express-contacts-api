@@ -25,7 +25,7 @@ export class ContactController {
       userId: req.user.id,
       contactId: Number(req.params.id),
     });
-    return res.status(200).json(ContactMapper.toResponse(contact));
+    return res.status(200).json(ContactMapper.toDetailResponse(contact));
   }
 
   async create(req: Request, res: Response) {
@@ -33,7 +33,7 @@ export class ContactController {
       ...req.body,
       userId: req.user.id,
     });
-    return res.status(201).json(ContactMapper.toResponse(contact));
+    return res.status(201).json(ContactMapper.toCreatedResponse(contact));
   }
 }
 

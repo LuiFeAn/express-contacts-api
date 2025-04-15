@@ -1,8 +1,8 @@
 export interface ContactResponse {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   phone: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
