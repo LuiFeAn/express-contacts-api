@@ -87,7 +87,6 @@ export class ContactSqliteRepository implements IContactRepository {
 
     const queryString = `SELECT * FROM contacts WHERE userId = ? ${whereLike} ${orderBy} LIMIT ? OFFSET ?`;
 
-
     const result: IContact[] = await new Promise((resolve, reject) => {
       this.db.all(queryString, [userId, ...whereParams, limitValue, offset], (err, rows: IContact[]) => {
         if (err) reject(err);
