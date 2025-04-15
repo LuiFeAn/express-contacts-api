@@ -19,8 +19,8 @@ export class ListContractService implements IBaseService<IListContractInput, IRe
         return this.contactRepository.findAllPaginated(input, {
             page: input.page,
             limit: input.limit,
-            sort: "createdAt",
-            order: "desc"
+            sort: input.sort,
+            order: input.order
         });
     }
 }
