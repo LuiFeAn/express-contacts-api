@@ -6,6 +6,9 @@ import { Request, Response } from "express";
 import { ContactMapper } from "./mappers/contact.mapper";
 import { detailContactService } from "./detail-contact.service";
 import { deleteContractService, DeleteContractService, IDeleteContractInput } from "./delete-contract.service";
+import { ListContactRequest } from "./requests/list-contact.dto";
+import { listContractService, ListContractService } from "./list-contract.service";
+import { IResourceListResponse } from "../../@shared/responses/resource-list.response";
 
 export interface IDetailContactInput {
   userId: number;
@@ -19,8 +22,9 @@ export class ContactController {
       Contact
     >,
     private readonly detailContact: IBaseService<IDetailContactInput, Contact>,
-      private readonly deleteContact: IBaseService<IDeleteContractInput, boolean>
-  ) {}
+    private readonly deleteContact: IBaseService<IDeleteContractInput, boolean>,
+    private readonly listContact: IBaseService<ListContactRequest, IResourceListResponse<Contact>>
+  ) { }
 
   async detail(req: Request, res: Response) {
     const contact = await this.detailContact.execute({
@@ -38,6 +42,14 @@ export class ContactController {
     return res.status(200).json(contact);
   }
 
+  async list(req: Request, res: Response) {
+    const contacts = await this.listContact.execute(req.body);
+    const mappedContacts = contacts.items.map((contact) =>
+      ContactMapper.toDetailResponse(contact)
+    );
+    return res.status(200).json(mappedContacts);
+  }
+
   async create(req: Request, res: Response) {
     const contact = await this.registerContact.execute({
       ...req.body,
@@ -50,5 +62,6 @@ export class ContactController {
 export const contactController = new ContactController(
   registerContactService,
   detailContactService,
-  deleteContractService
+  deleteContractService,
+  listContractService
 );

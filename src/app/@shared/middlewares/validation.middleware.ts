@@ -10,9 +10,10 @@ export enum ValidationType {
 
 export const zodRequestValidationMiddleware = (schema: ZodSchema, type: ValidationType = ValidationType.BODY) => {
   return (req: Request, res: Response, next: NextFunction) => {
+
     try {
       const result = schema.parse(req[type]);
-      req.body = result;
+      req[type] = result;
       next();
     } catch (error) {
       if (error instanceof ZodError) {

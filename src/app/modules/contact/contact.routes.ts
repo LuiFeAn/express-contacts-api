@@ -2,9 +2,9 @@ import router from "../authentication/authentication.routes";
 import { authorizationMiddleware } from "../../@shared/middlewares/authorization.middleware";
 import { contactController } from "./contact.controller";
 import { RegisterContactSchema } from "./requests/register-contact.dto";
-import { zodRequestValidationMiddleware, ValidationType  } from "../../@shared/middlewares/validation.middleware";
+import { zodRequestValidationMiddleware, ValidationType } from "../../@shared/middlewares/validation.middleware";
 import { DetailContactSchema } from "./requests/detail-contact.dto";
-
+import { ListContactSchema } from "./requests/list-contact.dto";
 router.post(
   "/users/contacts",
   authorizationMiddleware,
@@ -24,5 +24,12 @@ router.delete(
   authorizationMiddleware,
   zodRequestValidationMiddleware(DetailContactSchema, ValidationType.PARAMS),
   contactController.delete.bind(contactController)
+);
+
+router.get(
+  "/users/contacts",
+  authorizationMiddleware,
+  zodRequestValidationMiddleware(ListContactSchema, ValidationType.QUERY),
+  contactController.list.bind(contactController)
 );
 
