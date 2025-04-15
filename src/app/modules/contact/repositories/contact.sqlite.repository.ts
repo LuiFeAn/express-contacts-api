@@ -71,17 +71,22 @@ export class ContactSqliteRepository implements IContactRepository {
     let whereParams: string[] = [];
 
     if (name) {
-      whereLike += `name LIKE '%?%'`;
-      whereParams.push(name);
+      whereLike += `name LIKE ?`;
+      whereParams.push(`%${name}%`);
     }
     if (email) {
-      whereLike += `email LIKE '%?%'`;
-      whereParams.push(email);
+      whereLike += whereLike ? ` AND email LIKE ?` : `email LIKE ?`;
+      whereParams.push(`%${email}%`);
     }
     if (phone) {
-      whereLike += `phone LIKE '%?%'`;
-      whereParams.push(phone);
+      whereLike += whereLike ? ` AND phone LIKE ?` : `phone LIKE ?`;
+      whereParams.push(`%${phone}%`);
     }
+
+    if (whereLike) {
+      whereLike = `AND ${whereLike}`;
+    }
+
 
     const orderBy = `ORDER BY ${sort} ${order}`;
 
