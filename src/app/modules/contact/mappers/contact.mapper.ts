@@ -7,7 +7,7 @@ export class ContactMapper {
     return {
       id: contact.id,
       name: contact.name,
-      email: contact.email || "",
+      email: contact.email,
       phone: contact.phone,
       createdAt: contact.createdAt,
       updatedAt: contact.updatedAt,
