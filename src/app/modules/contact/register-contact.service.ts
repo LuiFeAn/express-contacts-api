@@ -17,10 +17,10 @@ export class RegisterContactService
 {
   constructor(private readonly contactRepository: IContactRepository) {}
 
-  async execute(request: IRegisterContactInput): Promise<Contact> {
+  async execute(dto: IRegisterContactInput): Promise<Contact> {
     const promises = [
-      this.contactRepository.findByPhone(request.userId, request.phone),
-      this.contactRepository.findByEmail(request.userId, request?.email || ""),
+      this.contactRepository.findByPhone(dto.userId, dto.phone),
+      this.contactRepository.findByEmail(dto.userId, dto?.email || ""),
     ];
 
     const [contactByPhone, contactByEmail] = await Promise.all(promises);
@@ -31,12 +31,8 @@ export class RegisterContactService
       });
     }
 
-    const contact = new Contact({
-      name: request.name,
-      phone: request.phone,
-      email: request.email,
-      userId: request.userId,
-    });
+    const contact = new Contact(dto);
+
     return this.contactRepository.create(contact);
   }
 }
