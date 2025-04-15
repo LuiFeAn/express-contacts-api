@@ -13,7 +13,7 @@ export const zodRequestValidationMiddleware = (schema: ZodSchema, type: Validati
 
     try {
       const result = schema.parse(req[type]);
-      req[type] = result;
+      req.body = result;
       next();
     } catch (error) {
       if (error instanceof ZodError) {

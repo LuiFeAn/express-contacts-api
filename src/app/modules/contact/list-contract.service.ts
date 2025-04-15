@@ -3,13 +3,10 @@ import { Contact } from "./model";
 import { IContactRepository } from "./repositories/contact.interface.repository";
 import { IResourceListResponse } from "../../@shared/responses/resource-list.response";
 import { contactSqliteRepository } from "./repositories/contact.sqlite.repository";
+import { ListContactRequest } from "./requests/list-contact.dto";
 
-interface IListContractInput {
+export interface IListContractInput extends ListContactRequest {
     userId: number;
-    page: number;
-    limit: number;
-    sort: keyof Contact;
-    order: "asc" | "desc";
 }
 
 export class ListContractService implements IBaseService<IListContractInput, IResourceListResponse<Contact>> {
@@ -19,7 +16,7 @@ export class ListContractService implements IBaseService<IListContractInput, IRe
         return this.contactRepository.findAllPaginated(input, {
             page: input.page,
             limit: input.limit,
-            sort: input.sort,
+            sort: input.sort as keyof Contact,
             order: input.order
         });
     }

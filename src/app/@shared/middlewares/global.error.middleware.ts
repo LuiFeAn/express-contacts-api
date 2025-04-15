@@ -10,6 +10,7 @@ export const globalError = (
   if (err instanceof RequestError) {
     return res.status(err.getStatusCode).json(err);
   }
+  console.log(err);
   const error = new RequestError("Erro interno do servidor", {
     statusCode: 500,
   });

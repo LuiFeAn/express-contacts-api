@@ -5,7 +5,7 @@ import { IContact } from "../model/interface";
 import sqlite from "../../../@shared/database/sqlite";
 import { QueryParamsType } from "../../../@shared/repository/base.repository";
 import { IResourceListResponse } from "../../../@shared/responses/resource-list.response";
-import { IListResource } from "../../../@shared/interfaces/list-resource.interface";
+import { IListResourceRequest } from "../../../@shared/interfaces/list-resource.interface";
 
 export class ContactSqliteRepository implements IContactRepository {
   constructor(private readonly db: Database) { }
@@ -60,12 +60,9 @@ export class ContactSqliteRepository implements IContactRepository {
     return new Contact(raw);
   }
 
-  async findAllPaginated(query?: QueryParamsType<Contact>, pagination?: IListResource<Contact>): Promise<IResourceListResponse<Contact>> {
+  async findAllPaginated(query: QueryParamsType<Contact>, pagination: IListResourceRequest<Contact>): Promise<IResourceListResponse<Contact>> {
     const { name, email, phone, userId } = query || {};
-    let { page, limit } = pagination || {};
-
-    page = page ?? 1;
-    limit = limit ?? 10;
+    const { page, limit, sort, order } = pagination || {};
 
     const offset = (page - 1) * limit;
     const limitValue = limit;
@@ -86,7 +83,10 @@ export class ContactSqliteRepository implements IContactRepository {
       whereParams.push(phone);
     }
 
-    const queryString = `SELECT * FROM contacts WHERE userId = ? ${whereLike} LIMIT ? OFFSET ?`;
+    const orderBy = `ORDER BY ${sort} ${order}`;
+
+    const queryString = `SELECT * FROM contacts WHERE userId = ? ${whereLike} ${orderBy} LIMIT ? OFFSET ?`;
+
 
     const result: IContact[] = await new Promise((resolve, reject) => {
       this.db.all(queryString, [userId, ...whereParams, limitValue, offset], (err, rows: IContact[]) => {
