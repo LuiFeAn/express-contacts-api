@@ -25,8 +25,14 @@ export class RegisterContactService
 
     const [contactByPhone, contactByEmail] = await Promise.all(promises);
 
-    if (contactByPhone || contactByEmail) {
-      throw new RequestError("Contato já cadastrado", {
+    if (contactByPhone) {
+      throw new RequestError("Número de telefone já cadastrado", {
+        statusCode: 409,
+      });
+    }
+
+    if (contactByEmail) {
+      throw new RequestError("Email já cadastrado", {
         statusCode: 409,
       });
     }
