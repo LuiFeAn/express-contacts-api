@@ -5,4 +5,5 @@ export interface IContactRepository extends IBaseRepository<Contact> {
     create(data: Contact): Promise<Contact>;
     findByPhone(userId: number, phone: string): Promise<Contact | null>;
     findByEmail(userId: number, email: string): Promise<Contact | null>;
+    findById(id: number): Promise<Contact | null>;
 }

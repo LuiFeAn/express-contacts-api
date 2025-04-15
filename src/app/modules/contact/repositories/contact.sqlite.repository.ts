@@ -21,6 +21,17 @@ export class ContactSqliteRepository implements IContactRepository {
     return new Contact(raw);
   }
 
+  async findById(id: number): Promise<Contact | null> {
+    const raw: IContact = await new Promise((resolve, reject) => {
+      this.db.get("SELECT * FROM contacts WHERE id = ?", [id], (err, row: IContact) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+    if (!raw) return null;
+    return new Contact(raw);
+  }
+
   async findByPhone(userId: number, phone: string): Promise<Contact | null> {
     const raw: IContact = await new Promise((resolve, reject) => {
       this.db.get(

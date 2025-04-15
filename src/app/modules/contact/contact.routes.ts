@@ -10,3 +10,9 @@ router.post(
   zodRequestValidationMiddleware(RegisterContactSchema),
   contactController.create.bind(contactController)
 );
+
+router.get(
+  "/users/contacts/:id",
+  authorizationMiddleware,
+  contactController.detail.bind(contactController)
+);
