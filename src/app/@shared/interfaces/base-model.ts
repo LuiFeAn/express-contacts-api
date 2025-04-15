@@ -1,5 +1,5 @@
 export interface IBaseModel {
-  id: number | undefined;
-  createdAt: Date;
-  updatedAt: Date;
+  id?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

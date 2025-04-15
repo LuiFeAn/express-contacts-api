@@ -1,12 +1,12 @@
 import { IBaseModel } from "../interfaces/base-model";
 
 export class BaseModel implements IBaseModel {
-  private _id: number | undefined;
-  private _createdAt: Date;
-  private _updatedAt: Date;
+  private _id?: number;
+  private _createdAt?: Date;
+  private _updatedAt?: Date;
 
   constructor({ id, createdAt, updatedAt }: IBaseModel) {
-    this._id = id;
+    this._id = id ?? 0;
     this._createdAt = createdAt ?? new Date();
     this._updatedAt = updatedAt ?? new Date();
   }
