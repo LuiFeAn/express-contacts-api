@@ -32,6 +32,16 @@ export class ContactSqliteRepository implements IContactRepository {
     return new Contact(raw);
   }
 
+  async delete(id: number): Promise<boolean> {
+    const result = await new Promise((resolve, reject) => {
+      this.db.run("DELETE FROM contacts WHERE id = ?", [id], (err) => {
+        if (err) reject(err);
+        else resolve(true);
+      });
+    });
+    return Boolean(result);
+  }
+
   async findByPhone(userId: number, phone: string): Promise<Contact | null> {
     const raw: IContact = await new Promise((resolve, reject) => {
       this.db.get(

@@ -5,6 +5,7 @@ import { RegisterContactRequest } from "./requests/register-contact.dto";
 import { Request, Response } from "express";
 import { ContactMapper } from "./mappers/contact.mapper";
 import { detailContactService } from "./detail-contact.service";
+import { deleteContractService, DeleteContractService, IDeleteContractInput } from "./delete-contract.service";
 
 export interface IDetailContactInput {
   userId: number;
@@ -17,15 +18,24 @@ export class ContactController {
       RegisterContactRequest,
       Contact
     >,
-    private readonly detailContact: IBaseService<IDetailContactInput, Contact>
+    private readonly detailContact: IBaseService<IDetailContactInput, Contact>,
+      private readonly deleteContact: IBaseService<IDeleteContractInput, boolean>
   ) {}
 
   async detail(req: Request, res: Response) {
     const contact = await this.detailContact.execute({
       userId: req.user.id,
-      contactId: Number(req.params.id),
+      contactId: req.params.id as unknown as number,
     });
     return res.status(200).json(ContactMapper.toDetailResponse(contact));
+  }
+
+  async delete(req: Request, res: Response) {
+    const contact = await this.deleteContact.execute({
+      userId: req.user.id,
+      id: req.params.id as unknown as number,
+    });
+    return res.status(200).json(contact);
   }
 
   async create(req: Request, res: Response) {
@@ -39,5 +49,6 @@ export class ContactController {
 
 export const contactController = new ContactController(
   registerContactService,
-  detailContactService
+  detailContactService,
+  deleteContractService
 );
